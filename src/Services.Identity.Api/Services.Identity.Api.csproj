@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -10,10 +10,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Convey" Version="0.5.*" />
-        <PackageReference Include="Convey.Logging" Version="0.5.*" />
-        <PackageReference Include="Convey.WebApi" Version="0.5.*" />
-        <PackageReference Include="Convey.WebApi.CQRS" Version="0.5.*" />
+        <PackageReference Include="Convey" Version="0.5.452" />
+        <PackageReference Include="Convey.Logging" Version="0.5.452" />
+        <PackageReference Include="Convey.WebApi" Version="0.5.452" />
+        <PackageReference Include="Convey.WebApi.CQRS" Version="0.5.452" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Services.Identity.Application\Services.Identity.Application.csproj" />
+      <ProjectReference Include="..\Services.Identity.Infrastructure\Services.Identity.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
