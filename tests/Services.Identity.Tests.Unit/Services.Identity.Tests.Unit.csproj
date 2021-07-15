@@ -19,4 +19,12 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Services.Identity.Core\Services.Identity.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core" />
+    </ItemGroup>
+
 </Project>
