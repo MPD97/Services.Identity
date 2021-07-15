@@ -4,7 +4,7 @@ namespace Services.Identity.Core.Exceptions
     {
         public override string Code => "invalid_aggregate_id";
 
-        public InvalidAggregateIdException(string message) : base(message)
+        public InvalidAggregateIdException() : base("Invalid aggregate id.")
         {
         }
     }
