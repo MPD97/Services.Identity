@@ -2,6 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <Title>Universal Identity Service</Title>
+        <Authors>MPD97.Services.Identity.Api</Authors>
+        <PackageProjectUrl>https://github.com/MPD97/Services.Identity</PackageProjectUrl>
+        <PackageTags>Identity Service JWT</PackageTags>
+        <Company>MPD97.Services.Identity.Api</Company>
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Convey" Version="0.4.*" />
+        <PackageReference Include="Convey.Logging" Version="0.4.*" />
+        <PackageReference Include="Convey.WebApi" Version="0.4.*" />
+        <PackageReference Include="Convey.WebApi.CQRS" Version="0.4.*" />
+    </ItemGroup>
 
 </Project>
