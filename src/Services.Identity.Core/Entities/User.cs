@@ -12,7 +12,7 @@ namespace Services.Identity.Core.Entities
         public DateTime CreatedAt { get; }
         public IEnumerable<string> Permissions { get; }
 
-        public User(Guid id, string email, string role, string password, DateTime createdAt, 
+        public User(Guid id, string email, string password,string role, DateTime createdAt, 
             IEnumerable<string> permissions = null)
         {
             if (string.IsNullOrWhiteSpace(email))
