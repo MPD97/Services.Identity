@@ -29,8 +29,4 @@
       <ProjectReference Include="..\Services.Identity.Tests.Shared\Services.Identity.Tests.Shared.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Sync" />
-    </ItemGroup>
-  
 </Project>
