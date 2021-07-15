@@ -22,6 +22,32 @@ Content-Type: application/json
 
 ### Get your user account details
 @accessToken = {{sign_in.response.body.$.accessToken}}
+@refreshToken = {{sign_in.response.body.$.refreshToken}}
 GET {{api}}/me
 Authorization: Bearer {{accessToken}}
 
+
+### Revoke access token
+POST {{api}}/access-tokens/revoke
+Content-Type: application/json
+
+{
+  "accesstoken": "{{accessToken}}"
+}
+
+### Renew access token using refresh token
+# @name renew
+POST {{api}}/refresh-tokens/use
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### Revoke refresh token
+POST {{api}}/refresh-tokens/revoke
+Content-Type: application/json
+
+{
+  "accesstoken": "{{accessToken}}"
+}
