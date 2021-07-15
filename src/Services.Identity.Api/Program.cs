@@ -18,7 +18,12 @@ namespace Services.Identity.Api
     public class Program
     {
         public static async Task Main(string[] args)
-            => await WebHost.CreateDefaultBuilder(args)
+            => await CreateWebHostBuilder(args)
+                .Build()
+                .RunAsync();
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+            => WebHost.CreateDefaultBuilder(args)
                 .ConfigureServices(services => services
                     .AddConvey()
                     .AddWebApi()
@@ -31,8 +36,6 @@ namespace Services.Identity.Api
                         .Get("", ctx => ctx.Response.WriteAsync(ctx.RequestServices.GetService<AppOptions>().Name))
                     ))
                 .UseLogging()
-                .UseVault()
-                .Build()
-                .RunAsync();
+                .UseVault();
     }
 }
