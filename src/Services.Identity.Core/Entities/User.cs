@@ -24,6 +24,11 @@ namespace Services.Identity.Core.Entities
             {
                 throw new InvalidPasswordException();
             }
+
+            if (!Entities.Role.IsValid(role))
+            {
+                
+            }
             
             Id = id;
             Email = email;
