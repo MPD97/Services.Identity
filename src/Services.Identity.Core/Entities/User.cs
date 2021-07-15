@@ -17,7 +17,7 @@ namespace Services.Identity.Core.Entities
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new InvalidEmailException();
+                throw new InvalidEmailException(email);
             }
 
             if (string.IsNullOrWhiteSpace(password))
