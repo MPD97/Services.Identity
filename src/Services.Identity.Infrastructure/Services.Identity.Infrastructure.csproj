@@ -28,4 +28,17 @@
         <PackageReference Include="Convey.WebApi.Swagger" Version="0.5.452" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Auth" />
+      <Folder Include="Contexts" />
+      <Folder Include="Decorators" />
+      <Folder Include="Exceptions" />
+      <Folder Include="Mongo" />
+      <Folder Include="Services" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Services.Identity.Application\Services.Identity.Application.csproj" />
+    </ItemGroup>
+
 </Project>
