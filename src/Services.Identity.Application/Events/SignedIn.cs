@@ -15,5 +15,4 @@ namespace Services.Identity.Application.Events
             Role = role;
         }
     }
-    
 }
