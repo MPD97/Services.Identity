@@ -13,7 +13,7 @@ using Services.Identity.Application.Services;
 
 namespace Services.Identity.Infrastructure.Services
 {
-internal sealed class MessageBroker : IMessageBroker
+    internal sealed class MessageBroker : IMessageBroker
     {
         private const string DefaultSpanContextHeader = "span_context";
         private readonly IBusPublisher _busPublisher;
