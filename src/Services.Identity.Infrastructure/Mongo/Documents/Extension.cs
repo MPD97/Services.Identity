@@ -43,5 +43,22 @@ namespace Services.Identity.Infrastructure.Mongo.Documents
                 CreatedAt = entity.CreatedAt,
                 RevokedAt = entity.RevokedAt
             };
+        
+        public static UserAgentDocument AsDocument(this UserAgent entity)
+            => new UserAgentDocument
+            {
+                Id = entity.Id,
+                UserId = entity.UserId,
+                CreatedAt = entity.CreatedAt,
+                BrowserFamily = entity.BrowserFamily,
+                BrowserMajorVersion = entity.BrowserMajorVersion,
+                BrowserMinorVersion = entity.BrowserMinorVersion,
+                OSFamily = entity.OSFamily,
+                OSMajorVersion = entity.OSMajorVersion,
+                OSMinorVersion = entity.OSMinorVersion,
+                DeviceFamily = entity.DeviceFamily,
+                DeviceBrand = entity.DeviceBrand,
+                DeviceModel = entity.DeviceModel
+            };
     }
 }
