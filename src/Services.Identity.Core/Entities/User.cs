@@ -27,7 +27,7 @@ namespace Services.Identity.Core.Entities
 
             if (!Entities.Role.IsValid(role))
             {
-                
+                throw new InvalidRoleException();
             }
             
             Id = id;
