@@ -51,6 +51,9 @@ namespace Services.Identity.Api
                         })
                         .Post<SignIn>("sign-in", async (cmd, ctx) =>
                         {
+                            var userAgent = ctx.Request.Headers["User-Agent"];
+                            cmd.UserAgent = userAgent;
+                            
                             var token = await ctx.RequestServices.GetService<IIdentityService>().SignInAsync(cmd);
                             await ctx.Response.WriteJsonAsync(token);
                         })
