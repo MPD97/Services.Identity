@@ -10,6 +10,8 @@ using Services.Identity.Application.Events;
 using Services.Identity.Core.Entities;
 using Services.Identity.Core.Exceptions;
 using Services.Identity.Core.Repositories;
+using UAParser;
+using UserAgent = Services.Identity.Core.Entities.UserAgent;
 
 namespace Services.Identity.Application.Services.Identity
 {
@@ -18,18 +20,21 @@ namespace Services.Identity.Application.Services.Identity
         private static readonly Regex EmailRegex = new Regex(
             @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
             @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
+            RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant,
+            TimeSpan.FromMilliseconds(100));
+        private static readonly Parser UAParser = Parser.GetDefault();
         private readonly IUserRepository _userRepository;
         private readonly IPasswordService _passwordService;
         private readonly IJwtProvider _jwtProvider;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IMessageBroker _messageBroker;
         private readonly ILogger<IdentityService> _logger;
+        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IUserAgentRepository _userAgentRepository;
 
         public IdentityService(IUserRepository userRepository, IPasswordService passwordService,
             IJwtProvider jwtProvider, IRefreshTokenService refreshTokenService,
-            IMessageBroker messageBroker, ILogger<IdentityService> logger)
+            IMessageBroker messageBroker, ILogger<IdentityService> logger, IDateTimeProvider dateTimeProvider, IUserAgentRepository userAgentRepository)
         {
             _userRepository = userRepository;
             _passwordService = passwordService;
@@ -37,6 +42,8 @@ namespace Services.Identity.Application.Services.Identity
             _refreshTokenService = refreshTokenService;
             _messageBroker = messageBroker;
             _logger = logger;
+            _dateTimeProvider = dateTimeProvider;
+            _userAgentRepository = userAgentRepository;
         }
 
         public async Task<UserDto> GetAsync(Guid id)
@@ -75,10 +82,18 @@ namespace Services.Identity.Application.Services.Identity
                 : null;
             var auth = _jwtProvider.Create(user.Id, user.Role, claims: claims);
             auth.RefreshToken = await _refreshTokenService.CreateAsync(user.Id);
+            
+
+            ClientInfo clientInfo = UAParser.Parse(command.UserAgent);
+            var userAgent =  new UserAgent(Guid.NewGuid(), user.Id, _dateTimeProvider.Now, clientInfo.UA.Family,
+                clientInfo.UA.Major, clientInfo.UA.Minor,
+                clientInfo.OS.Family, clientInfo.OS.Major, clientInfo.OS.Minor,
+                clientInfo.Device.Family, clientInfo.Device.Brand, clientInfo.Device.Model);
+            await _userAgentRepository.AddAsync(userAgent);
 
             _logger.LogInformation($"User with id: {user.Id} has been authenticated.");
             await _messageBroker.PublishAsync(new SignedIn(user.Id, user.Role));
-
+            
             return auth;
         }
 

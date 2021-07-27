@@ -62,7 +62,8 @@ namespace Services.Identity.Infrastructure
             builder.Services.AddSingleton<IRng, Rng>();
             builder.Services.AddTransient<IMessageBroker, MessageBroker>();
             builder.Services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
-            builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IUserRepository, MongoUserRepository>();
+            builder.Services.AddTransient<IUserAgentRepository, MongoUserAgentRepository>();
             builder.Services.AddTransient<IAppContextFactory, AppContextFactory>();
             builder.Services.AddTransient(ctx => ctx.GetRequiredService<IAppContextFactory>().Create());
             builder.Services.TryDecorate(typeof(ICommandHandler<>), typeof(OutboxCommandHandlerDecorator<>));
@@ -85,6 +86,7 @@ namespace Services.Identity.Infrastructure
                 .AddJaeger()
                 .AddMongoRepository<RefreshTokenDocument, Guid>("refreshTokens")
                 .AddMongoRepository<UserDocument, Guid>("users")
+                .AddMongoRepository<UserAgentDocument, Guid>("userAgents")
                 .AddWebApiSwaggerDocs()
                 .AddSecurity();
         }
