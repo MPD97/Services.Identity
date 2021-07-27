@@ -7,11 +7,11 @@ using Services.Identity.Infrastructure.Mongo.Documents;
 
 namespace Services.Identity.Infrastructure.Mongo.Repositories
 {
-    internal sealed  class UserRepository : IUserRepository
+    internal sealed  class MongoUserRepository : IUserRepository
     {
         private readonly IMongoRepository<UserDocument, Guid> _repository;
 
-        public UserRepository(IMongoRepository<UserDocument, Guid> repository)
+        public MongoUserRepository(IMongoRepository<UserDocument, Guid> repository)
         {
             _repository = repository;
         }
