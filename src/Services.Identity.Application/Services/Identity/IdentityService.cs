@@ -105,6 +105,12 @@ namespace Services.Identity.Application.Services.Identity
                 throw new InvalidEmailException(command.Email);
             }
 
+            const int passwordMinLength = 6;
+            const int passwordMaxLength = 20;
+            var passwordLength = command.Password.Length;
+            if (passwordLength is < 6 or > 20)
+                throw new InvalidPasswordLengthException(passwordLength, passwordMinLength, passwordMaxLength);
+
             var user = await _userRepository.GetAsync(command.Email);
             if (user is {})
             {
