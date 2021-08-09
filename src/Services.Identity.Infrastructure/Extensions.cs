@@ -58,6 +58,7 @@ namespace Services.Identity.Infrastructure
             builder.Services.AddSingleton<IPasswordService, PasswordService>();
             builder.Services.AddSingleton<IPasswordHasher<IPasswordService>, PasswordHasher<IPasswordService>>();
             builder.Services.AddTransient<IIdentityService, IdentityService>();
+            builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddTransient<IRefreshTokenService, RefreshTokenService>();
             builder.Services.AddSingleton<IRng, Rng>();
             builder.Services.AddTransient<IMessageBroker, MessageBroker>();

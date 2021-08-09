@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Convey" Version="0.5.452" />
+      <PackageReference Include="UAParser" Version="3.1.47" />
     </ItemGroup>
     
     <ItemGroup>
