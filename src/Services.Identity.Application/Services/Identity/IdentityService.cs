@@ -88,7 +88,7 @@ namespace Services.Identity.Application.Services.Identity
             var userAgent =  new UserAgent(Guid.NewGuid(), user.Id, _dateTimeProvider.Now, clientInfo.UA.Family,
                 clientInfo.UA.Major, clientInfo.UA.Minor,
                 clientInfo.OS.Family, clientInfo.OS.Major, clientInfo.OS.Minor,
-                clientInfo.Device.Family, clientInfo.Device.Brand, clientInfo.Device.Model);
+                clientInfo.Device.Family, clientInfo.Device.Brand, clientInfo.Device.Model, command.UserAgent);
             await _userAgentRepository.AddAsync(userAgent);
 
             _logger.LogInformation($"User with id: {user.Id} has been authenticated.");

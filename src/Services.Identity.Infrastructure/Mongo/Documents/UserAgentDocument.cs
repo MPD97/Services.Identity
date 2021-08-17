@@ -17,5 +17,6 @@ namespace Services.Identity.Infrastructure.Mongo.Documents
         public string DeviceFamily { get; set; }
         public string DeviceBrand { get; set; }
         public string DeviceModel { get; set; }
+        public string Raw { get; set; }
     }
 }

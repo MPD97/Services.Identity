@@ -58,7 +58,8 @@ namespace Services.Identity.Infrastructure.Mongo.Documents
                 OSMinorVersion = entity.OSMinorVersion,
                 DeviceFamily = entity.DeviceFamily,
                 DeviceBrand = entity.DeviceBrand,
-                DeviceModel = entity.DeviceModel
+                DeviceModel = entity.DeviceModel,
+                Raw = entity.Raw
             };
     }
 }

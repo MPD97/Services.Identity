@@ -16,11 +16,12 @@ namespace Services.Identity.Core.Entities
         public string DeviceFamily { get; private set; }
         public string DeviceBrand { get; private set; }
         public string DeviceModel { get; private set; }
+        public string Raw { get; private set; }
 
         public UserAgent(AggregateId id, AggregateId userId, DateTime createdAt, string browserFamily, 
             string browserMajorVersion, string browserMinorVersion, string osFamily, string osMajorVersion,
             string osMinorVersion, string deviceFamily,
-            string deviceBrand, string deviceModel)
+            string deviceBrand, string deviceModel, string raw)
         {
             Id = id;
             UserId = userId;
@@ -35,6 +36,8 @@ namespace Services.Identity.Core.Entities
             DeviceFamily = deviceFamily;
             DeviceBrand = deviceBrand;
             DeviceModel = deviceModel;
+
+            Raw = raw.Length > 1024 ? raw[..1021] + "..." : raw;
         }
     }
 }
