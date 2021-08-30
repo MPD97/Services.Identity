@@ -53,7 +53,7 @@ namespace Services.Identity.Api
                         {
                             var userAgent = ctx.Request.Headers["User-Agent"];
                             cmd.UserAgent = userAgent;
-                            
+
                             var token = await ctx.RequestServices.GetService<IIdentityService>().SignInAsync(cmd);
                             await ctx.Response.WriteJsonAsync(token);
                         })
@@ -64,12 +64,14 @@ namespace Services.Identity.Api
                         })
                         .Post<RevokeAccessToken>("access-tokens/revoke", async (cmd, ctx) =>
                         {
-                            await ctx.RequestServices.GetService<IAccessTokenService>().DeactivateAsync(cmd.AccessToken);
+                            await ctx.RequestServices.GetService<IAccessTokenService>()
+                                .DeactivateAsync(cmd.AccessToken);
                             ctx.Response.StatusCode = 204;
                         })
                         .Post<UseRefreshToken>("refresh-tokens/use", async (cmd, ctx) =>
                         {
-                            var token = await ctx.RequestServices.GetService<IRefreshTokenService>().UseAsync(cmd.RefreshToken);
+                            var token = await ctx.RequestServices.GetService<IRefreshTokenService>()
+                                .UseAsync(cmd.RefreshToken);
                             await ctx.Response.WriteJsonAsync(token);
                         })
                         .Post<RevokeRefreshToken>("refresh-tokens/revoke", async (cmd, ctx) =>
@@ -78,8 +80,7 @@ namespace Services.Identity.Api
                             ctx.Response.StatusCode = 204;
                         })
                     ))
-                .UseLogging()
-                .UseVault();
+                .UseLogging();
         
         private static async Task GetUserAsync(Guid id, HttpContext context)
         {
