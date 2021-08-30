@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Convey;
 using Convey.Auth;
-using Convey.CQRS.Commands;
-using Convey.CQRS.Events;
 using Convey.CQRS.Queries;
 using Convey.Discovery.Consul;
 using Convey.Docs.Swagger;
@@ -14,13 +12,9 @@ using Convey.HTTP;
 using Convey.LoadBalancing.Fabio;
 using Convey.MessageBrokers;
 using Convey.MessageBrokers.CQRS;
-using Convey.MessageBrokers.Outbox;
-using Convey.MessageBrokers.Outbox.Mongo;
 using Convey.MessageBrokers.RabbitMQ;
-using Convey.Metrics.AppMetrics;
 using Convey.Persistence.MongoDB;
 using Convey.Persistence.Redis;
-using Convey.Security;
 using Convey.Tracing.Jaeger;
 using Convey.Tracing.Jaeger.RabbitMQ;
 using Convey.WebApi;
@@ -32,7 +26,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Services.Identity.Application;
 using Services.Identity.Application.Commands;
@@ -41,7 +34,6 @@ using Services.Identity.Application.Services.Identity;
 using Services.Identity.Core.Repositories;
 using Services.Identity.Infrastructure.Auth;
 using Services.Identity.Infrastructure.Contexts;
-using Services.Identity.Infrastructure.Decorators;
 using Services.Identity.Infrastructure.Exceptions;
 using Services.Identity.Infrastructure.Mongo;
 using Services.Identity.Infrastructure.Mongo.Documents;
@@ -67,8 +59,6 @@ namespace Services.Identity.Infrastructure
             builder.Services.AddTransient<IUserAgentRepository, MongoUserAgentRepository>();
             builder.Services.AddTransient<IAppContextFactory, AppContextFactory>();
             builder.Services.AddTransient(ctx => ctx.GetRequiredService<IAppContextFactory>().Create());
-            builder.Services.TryDecorate(typeof(ICommandHandler<>), typeof(OutboxCommandHandlerDecorator<>));
-            builder.Services.TryDecorate(typeof(IEventHandler<>), typeof(OutboxEventHandlerDecorator<>));
 
             return builder
                 .AddErrorHandler<ExceptionToResponseMapper>()
@@ -80,16 +70,13 @@ namespace Services.Identity.Infrastructure
                 .AddFabio()
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
                 .AddRabbitMq(plugins: p => p.AddJaegerRabbitMqPlugin())
-                .AddMessageOutbox(o => o.AddMongo())
                 .AddMongo()
                 .AddRedis()
-                .AddMetrics()
                 .AddJaeger()
                 .AddMongoRepository<RefreshTokenDocument, Guid>("refreshTokens")
                 .AddMongoRepository<UserDocument, Guid>("users")
                 .AddMongoRepository<UserAgentDocument, Guid>("userAgents")
-                .AddWebApiSwaggerDocs()
-                .AddSecurity();
+                .AddWebApiSwaggerDocs();
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
@@ -101,7 +88,6 @@ namespace Services.Identity.Infrastructure
                 .UseAccessTokenValidator()
                 .UseMongo()
                 .UsePublicContracts<ContractAttribute>()
-                .UseMetrics()
                 .UseAuthentication()
                 .UseRabbitMq()
                 .SubscribeCommand<SignUp>();
